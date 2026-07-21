@@ -1,4 +1,4 @@
-# SwiftVLM
+# Adaptive-VisualTokens
 
 Question-aware adaptive visual-token selection for LLaVA-1.5-7B, so the language model only processes the image tokens a given question actually needs.
 
