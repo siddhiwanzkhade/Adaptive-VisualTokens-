@@ -48,26 +48,6 @@ Tokens are selected using a cumulative relevance threshold instead of a fixed `K
 
 Selected tokens are restored to their original spatial order before being passed to Vicuna.
 
-## Results
-
-### Training-Free Baseline — VQAv2, n=100
-
-| Metric | Result |
-|---|---:|
-| Visual-token reduction | 61–68% |
-| Tokens processed | 576 → approximately 183–222 |
-| Full-token VQA score | 0.690 |
-| Compressed VQA score | 0.527 |
-| Quality retained | approximately 76% |
-| Peak memory saved | approximately 5.4% |
-| Batch-1 latency | no meaningful improvement |
-| Batch-4 latency | 9.7% lower |
-| Batch-4 throughput | 10.8% higher |
-| Batch-4 peak memory | 8.6% lower |
-
-The selector removes most visual tokens, but some VQA accuracy is lost.
-
-At batch size 1, compression does not improve latency. At batch size 4, the same method reduces latency, increases throughput, and lowers peak GPU memory.
 
 ## Experiments
 
@@ -106,7 +86,26 @@ The results suggest that visual-token compression becomes more useful as batch s
 
 Then keep the technical section separately:
 
+## Results
 
+### Training-Free Baseline — VQAv2, n=100
+
+| Metric | Result |
+|---|---:|
+| Visual-token reduction | 61–68% |
+| Tokens processed | 576 → approximately 183–222 |
+| Full-token VQA score | 0.690 |
+| Compressed VQA score | 0.527 |
+| Quality retained | approximately 76% |
+| Peak memory saved | approximately 5.4% |
+| Batch-1 latency | no meaningful improvement |
+| Batch-4 latency | 9.7% lower |
+| Batch-4 throughput | 10.8% higher |
+| Batch-4 peak memory | 8.6% lower |
+
+The selector removes most visual tokens, but some VQA accuracy is lost.
+
+At batch size 1, compression does not improve latency. At batch size 4, the same method reduces latency, increases throughput, and lowers peak GPU memory.
 
 ## Known Limitations
 
