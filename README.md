@@ -51,9 +51,9 @@ Selected tokens are restored to their original spatial order before being passed
 
 ## Experiments
 
-### Experiment 1 — QLoRA Quality Recovery
+### Experiment 1 — Fine-Tuning Vicuna for Compressed Visual Inputs
 
-QLoRA was used to adapt Vicuna to compressed visual inputs.
+QLoRA fine-tuning was applied to help Vicuna adapt to the reduced visual-token sequence.
 
 ```text
 Frozen compressed model: 49%
@@ -64,9 +64,9 @@ The adapter trained approximately 8.4M parameters, or 0.12% of the model.
 
 QLoRA recovered some quality, but it did not improve inference speed. Its apparent latency improvement came from generating shorter answers rather than faster decoding.
 
-### Experiment 2 — Batched Inference
+### Experiment 2 — Batched Inference Optimization with Adaptive Visual Tokens
 
-Full-token and adaptive-token inference were compared at batch sizes 1, 2, and 4.
+Compared full-token inference with adaptive-token inference at batch sizes 1, 2, and 4 using the same model and generation settings.
 
 | Batch | Adaptive Tokens | Token Reduction | Latency Change | Throughput Change | Memory Change |
 |---:|---:|---:|---:|---:|---:|
