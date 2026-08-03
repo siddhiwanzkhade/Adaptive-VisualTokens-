@@ -27,22 +27,44 @@ The reported VQA score uses an approximate normalized substring-based soft score
 ## Approach
 
 ```text
-Image ──▶ CLIP ──▶ 576 visual tokens
-                         │
-Question ──▶ embedding ──┤
-                         ▼
-              question-aware scoring
-       0.7 × relevance + 0.3 × visual norm
-                         │
-                         ▼
-          adaptive token selection [32, 512]
-                         │
-                         ▼
-             Vicuna with compressed input
-                         │
-                         ▼
-          confidence-based fallback once
-```
+Image ──▶ CLIP vision encoder ──▶ 576 projected visual tokens
+                                        │
+Question ──▶ question embedding ───────┤
+                                        ▼
+                          question-aware token scoring
+                       0.7 × relevance + 0.3 × visual norm
+                                        │
+                                        ▼
+                    adaptive cumulative-coverage selection
+                              bounded to [32, 512]
+                                        │
+                                        ▼
+                     restore selected tokens to their
+                          original spatial order
+                                        │
+                                        ▼
+                         reduced visual-token sequence
+                                        │
+                                        ▼
+                     Vicuna generates the first answer
+                                        │
+                                        ▼
+                    confidence and entropy evaluation
+                              │                   │
+                     confidence high        confidence low
+                              │                   │
+                              │                   ▼
+                              │          increase coverage threshold
+                              │                   │
+                              │                   ▼
+                              │          reselect more visual tokens
+                              │                   │
+                              │                   ▼
+                              │          regenerate answer once
+                              │                   │
+                              └───────────┬───────┘
+                                          ▼
+                         final answer + tokens used
 
 Tokens are selected using a cumulative relevance threshold instead of a fixed `K`.
 
