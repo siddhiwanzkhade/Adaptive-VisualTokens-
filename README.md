@@ -9,6 +9,11 @@ LLaVA converts every image into 576 visual tokens and sends all of them to Vicun
 
 This increases memory usage and multimodal prefill computation unnecessarily.
 
+## Idea
+
+Apply question-aware adaptive token pruning between CLIP and Vicuna, so only the visual embeddings most relevant to the question are forwarded to the language model instead of all 576 tokens.
+
+This reduces the multimodal sequence length and inference cost without using a fixed token budget.
 
 ## Tech Stack and Setup
 
