@@ -1,12 +1,28 @@
 # Adaptive-VisualTokens
 
-Question-aware adaptive visual-token selection for LLaVA-1.5-7B, reducing the number of image tokens processed by the language model while preserving useful VQA quality.
+
+Question-aware adaptive visual-token selection for LLaVA-1.5-7B that reduces the number of CLIP image tokens sent to Vicuna(LLM) while preserving useful VQA quality.
 
 ## Problem
 
 LLaVA converts every image into 576 visual tokens and sends all of them to Vicuna, even when a question only depends on a small part of the image.
 
 This increases memory usage and multimodal prefill computation unnecessarily.
+
+
+## Tech Stack and Setup
+
+- **Model:** `llava-hf/llava-1.5-7b-hf`
+- **Architecture:** CLIP ViT-L/14-336 + Vicuna-7B
+- **Token compression:** question-aware adaptive selection before Vicuna
+- **Frameworks:** Python, PyTorch, Hugging Face Transformers
+- **Quantization:** bitsandbytes 4-bit NF4
+- **Fine-tuning:** PEFT / QLoRA
+- **Dataset:** VQAv2 validation subset
+- **Data tools:** Hugging Face Datasets, NumPy, Pandas, Pillow
+- **Hardware:** NVIDIA A100 on Google Colab
+
+The reported VQA score uses an approximate normalized substring-based soft score, not the official VQAv2 evaluation metric.
 
 ## Approach
 
@@ -87,27 +103,10 @@ At batch size 4, adaptive token selection achieved:
 
 The results suggest that visual-token compression becomes more useful as batch size increases.
 
-## Setup
 
-```text
-Model: llava-hf/llava-1.5-7b-hf
-Vision encoder: CLIP ViT-L/14, 336px
-Language model: Vicuna-7B
-Quantization: 4-bit NF4
-Dataset: VQAv2 validation subset
-Hardware: single A100 on Google Colab
-```
+Then keep the technical section separately:
 
-The reported VQA score uses an approximate normalized substring-based soft score, not the official VQAv2 evaluation metric.
 
-## Repository Structure
-
-```text
-Adaptive-VisualTokens/
-├── run_swiftvlm.ipynb
-├── README.md
-└── results/
-```
 
 ## Known Limitations
 
@@ -116,6 +115,4 @@ Adaptive-VisualTokens/
 - Batched results are preliminary and should be repeated across more batches.
 - Published token-reduction methods have not yet been evaluated at matched compression ratios.
 
-## Stack
 
-Python, PyTorch, Transformers, PEFT, bitsandbytes, Hugging Face Datasets, NumPy, Pandas, and Matplotlib.
