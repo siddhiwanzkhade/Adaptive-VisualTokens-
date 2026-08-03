@@ -66,9 +66,11 @@ Question ──▶ question embedding ───────┤
                                           ▼
                          final answer + tokens used
 
+```
+
 Tokens are selected using a cumulative relevance threshold instead of a fixed `K`.
 
-Selected tokens are restored to their original spatial order before being passed to Vicuna.
+The selected tokens are restored to their original spatial order before being passed to Vicuna.
 
 
 ## Experiments
