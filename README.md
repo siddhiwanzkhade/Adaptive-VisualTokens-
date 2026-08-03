@@ -1,7 +1,7 @@
 # SwiftVLM : Adaptive-VisualTokens
 
 
-Question-aware adaptive visual-token selection for LLaVA-1.5-7B that reduces the number of CLIP image tokens sent to Vicuna(LLM) while preserving useful VQA quality.
+Question-aware adaptive visual-token selection for LLaVA-1.5-7B that reduces the number of CLIP image tokens sent to Vicuna(LLM) while preserving useful VQA(Visual Question Answering) quality.
 
 ## Problem
 
