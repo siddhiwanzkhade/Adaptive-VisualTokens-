@@ -147,6 +147,10 @@ This confirmed that at batch size 1, the model is memory-bandwidth bound rather 
 
 Visual-token compression for VLM inference isn't universally beneficial — its value depends entirely on the serving regime. At low batch sizes, the model is memory-bandwidth bound, so reducing tokens barely helps. At higher batch sizes, the bottleneck shifts toward compute, and the same compression method delivers real, scaling gains — up to 23% lower latency, 30% higher throughput, and 25% lower memory at batch size 16. The right question isn't "does token compression work," it's "under what conditions does it work" — and this project answers that with profiling evidence, not assumption.
 
+### MAIN RESULT : 
+~71% fewer visual tokens → ~30% higher throughput at batch size 16, with ~76% VQA accuracy retained.
+Throughput is what production inference systems actually optimize for — this shows the token reduction directly drives real serving gains, not just a smaller input.
+
 ## Known Limitations
 
 - The compressed baseline loses some VQA quality.
