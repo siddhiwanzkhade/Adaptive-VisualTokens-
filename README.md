@@ -135,6 +135,14 @@ Gains scaled consistently with batch size — negligible at batch 1, growing ste
 The selector removes most visual tokens, but some VQA accuracy is lost.
 At batch size 1, compression does not improve latency. As batch size increases, the same method reduces latency, increases throughput, and lowers peak GPU memory — with gains growing from batch 2 through batch 16, reaching a 23.0% latency reduction, 29.8% throughput improvement, and 25.3% memory reduction at batch size 16.
 
+### Kernal Profiling — Locating the Real Bottleneck
+
+To understand why compression didn't improve batch-size-1 latency, inference was profiled at the GPU kernel level using NVIDIA Nsight Systems (NSYS).
+
+The kernel-time breakdown showed that `kQuantizeBlockwiseSmall` (the 4-bit weight dequantization kernel) accounted for 54–67% of total GPU time — far more than the actual matrix-multiplication (GEMM) kernels used for computation. This kernel count did not change between the baseline and adaptive-token runs, since it scales with model weights, not input size.
+
+This confirmed that at batch size 1, the model is memory-bandwidth bound rather than compute bound — reducing visual tokens shrinks GEMM input, but GEMM was never the dominant cost. This is why token compression alone did not improve single-request latency, and why its benefit only appeared once batching shifted the bottleneck toward compute.
+
 ## Known Limitations
 
 - The compressed baseline loses some VQA quality.
