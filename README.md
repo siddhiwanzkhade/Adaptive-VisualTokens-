@@ -135,7 +135,7 @@ Gains scaled consistently with batch size — negligible at batch 1, growing ste
 The selector removes most visual tokens, but some VQA accuracy is lost.
 At batch size 1, compression does not improve latency. As batch size increases, the same method reduces latency, increases throughput, and lowers peak GPU memory — with gains growing from batch 2 through batch 16, reaching a 23.0% latency reduction, 29.8% throughput improvement, and 25.3% memory reduction at batch size 16.
 
-### Kernal Profiling — Locating the Real Bottleneck
+### Kernal level GPU Profiling — Locating the Real Bottleneck
 
 To understand why compression didn't improve batch-size-1 latency, inference was profiled at the GPU kernel level using NVIDIA Nsight Systems (NSYS).
 
