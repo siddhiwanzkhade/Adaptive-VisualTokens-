@@ -95,25 +95,22 @@ QLoRA recovered some quality, but it did not improve inference speed. Its appare
 
 ### Experiment 2 — Batched Inference Optimization with Adaptive Visual Tokens
 
-Compared full-token inference with adaptive-token inference at batch sizes 1, 2, and 4 using the same model and generation settings.
+Compared full-token inference with adaptive-token inference at batch sizes 1, 2, and 4 , 8, 16 using the same model and generation settings.
 
 | Batch | Adaptive Tokens | Token Reduction | Latency Change | Throughput Change | Memory Change |
 |---:|---:|---:|---:|---:|---:|
 | 1 | 165.0 | 71.35% | 2.2% slower | 2.1% lower | 2.86% lower |
 | 2 | 170.0 | 70.49% | 4.03% lower | 4.20% higher | 4.42% lower |
 | 4 | 174.75 | 69.66% | 9.72% lower | 10.77% higher | 8.59% lower |
+| 8	| 161.125	| 72.03%	| 12.73% lower | 14.59% higher	|15.19% lower |
+|16	| 165.5625 | 71.26%	| 22.98% lower	| 29.83% higher	| 25.25% lower |
 
-At batch size 4, adaptive token selection achieved:
-
-- 69.7% fewer visual tokens
-- 9.7% lower latency
-- 10.8% higher throughput
-- 8.6% lower peak GPU memory
-
-The results suggest that visual-token compression becomes more useful as batch size increases.
-
-
-Then keep the technical section separately:
+At batch size 16, adaptive token selection achieved:
+- 71.3% fewer visual tokens
+- 23.0% lower latency
+- 29.8% higher throughput
+- 25.3% lower peak GPU memory
+Gains scaled consistently with batch size — negligible at batch 1, growing steadily through batch 16 — indicating the model shifts from memory-bandwidth-bound toward compute-bound as batch size increases, which is where token compression pays off.
 
 ## Results
 
@@ -128,19 +125,16 @@ Then keep the technical section separately:
 | Quality retained | approximately 76% |
 | Peak memory saved | approximately 5.4% |
 | Batch-1 latency | no meaningful improvement |
-| Batch-4 latency | 9.7% lower |
-| Batch-4 throughput | 10.8% higher |
-| Batch-4 peak memory | 8.6% lower |
+| Batch-16 latency | 23.0% l
 
 The selector removes most visual tokens, but some VQA accuracy is lost.
-
-At batch size 1, compression does not improve latency. At batch size 4, the same method reduces latency, increases throughput, and lowers peak GPU memory.
+At batch size 1, compression does not improve latency. As batch size increases, the same method reduces latency, increases throughput, and lowers peak GPU memory — with gains growing from batch 2 through batch 16, reaching a 23.0% latency reduction, 29.8% throughput improvement, and 25.3% memory reduction at batch size 16.
 
 ## Known Limitations
 
 - The compressed baseline loses some VQA quality.
 - Confidence fallback cannot detect every confidently incorrect answer.
-- Batched results are preliminary and should be repeated across more batches.
+- Batched results tested up to batch size 16; not yet validated on larger production batch sizes or real serving frameworks (e.g. vLLM).
 - Published token-reduction methods have not yet been evaluated at matched compression ratios.
 
 
