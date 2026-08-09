@@ -125,7 +125,12 @@ Gains scaled consistently with batch size — negligible at batch 1, growing ste
 | Quality retained | approximately 76% |
 | Peak memory saved | approximately 5.4% |
 | Batch-1 latency | no meaningful improvement |
-| Batch-16 latency | 23.0% l
+| Batch-4 latency |	9.7% lower |
+| Batch-8 latency	| 12.7% lower |
+| Batch-16 latency |	23.0% lower |
+| Batch-16 throughput	| 29.8% higher |
+| Batch-16 peak memory| 25.3% lower |
+
 
 The selector removes most visual tokens, but some VQA accuracy is lost.
 At batch size 1, compression does not improve latency. As batch size increases, the same method reduces latency, increases throughput, and lowers peak GPU memory — with gains growing from batch 2 through batch 16, reaching a 23.0% latency reduction, 29.8% throughput improvement, and 25.3% memory reduction at batch size 16.
