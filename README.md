@@ -143,6 +143,10 @@ The kernel-time breakdown showed that `kQuantizeBlockwiseSmall` (the 4-bit weigh
 
 This confirmed that at batch size 1, the model is memory-bandwidth bound rather than compute bound — reducing visual tokens shrinks GEMM input, but GEMM was never the dominant cost. This is why token compression alone did not improve single-request latency, and why its benefit only appeared once batching shifted the bottleneck toward compute.
 
+### MAIN CONCLUSION:
+
+Visual-token compression for VLM inference isn't universally beneficial — its value depends entirely on the serving regime. At low batch sizes, the model is memory-bandwidth bound, so reducing tokens barely helps. At higher batch sizes, the bottleneck shifts toward compute, and the same compression method delivers real, scaling gains — up to 23% lower latency, 30% higher throughput, and 25% lower memory at batch size 16. The right question isn't "does token compression work," it's "under what conditions does it work" — and this project answers that with profiling evidence, not assumption.
+
 ## Known Limitations
 
 - The compressed baseline loses some VQA quality.
