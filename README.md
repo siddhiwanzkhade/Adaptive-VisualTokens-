@@ -118,7 +118,7 @@ Gains scaled consistently with batch size — negligible at batch 1, growing ste
 
 | Metric | Result |
 |---|---:|
-| Visual-token reduction | 61–68% |
+| Visual-token reduction | 68-71% |
 | Tokens processed | 576 → approximately 183–222 |
 | Full-token VQA score | 0.690 |
 | Compressed VQA score | 0.527 |
